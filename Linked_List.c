@@ -1,0 +1,216 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int info;
+    struct node *next;
+};
+
+struct node *new;
+struct node *cur;
+struct node *prev;
+struct node *list;
+
+void frontins();
+void backins();
+void display();
+void frontdelete();
+void backdelete();
+void posins();
+
+void main()
+{
+    while (1)
+    {
+        printf("\n\n\n1.Front Insertion\n2.Back Insertion\n3.Positional Insertion\n4.Display\n5.Front delete\n6.Back delete\n\nEnter your choice: ");
+        int ch;
+        scanf("%d",&ch);
+        switch (ch)
+        {
+        case 1:
+            frontins();
+            break;
+        case 2:
+            backins();
+            break;
+        case 3:
+            posins();
+            break;
+        case 4:
+            display();
+            break;
+        case 5:
+            frontdelete();
+            break;
+        case 6:
+            backdelete();
+            break;
+        default:
+            exit(1);
+            break;
+        }
+    }
+    
+    // list = NULL;
+    // for (int i=0;i<3;i++)
+    // {
+    //   frontins();  
+    // }
+    // display();
+    // printf("\n%d",list->info);
+}
+
+void frontins()
+{
+        int x;
+        printf("Enter data:\n");
+        scanf("%d",&x);
+        new = (struct node*) malloc(sizeof(struct node*));
+        new->info = x;
+        new->next = NULL;
+        if (list == NULL)
+        {
+            list = new;
+        }
+        else
+        {
+            new->next = list;
+            list = new;
+        }
+}
+
+void display()
+{
+    if (list==NULL)
+    {
+        printf("List is empty");
+        return;
+    }
+    printf("Contents of list are: ");
+    cur = list;
+    while(cur != NULL)
+    {
+        printf("%d ",cur->info); 
+        cur = cur->next;
+    }
+}
+
+void backins()
+{
+    int x;
+    printf("Enter data:\n");
+    scanf("%d",&x);
+    new = (struct node*) malloc(sizeof(struct node*));
+    new->info = x;
+    new->next = NULL;
+    if (list == NULL)
+    {
+        list = new;
+    }
+    else
+    {
+        cur = list;
+        while(cur->next != NULL)
+        {
+            cur = cur->next;
+        }
+        cur->next = new;
+        cur = NULL; 
+    }
+}
+
+void posins()
+{
+    int pos,x;
+    printf("\nEnter position to be inserted: ");
+    scanf("%d",&pos);
+    printf("\nEnter data to be inserted: ");
+    scanf("%d",&x);
+    new = (struct node*) malloc(sizeof(struct node*));
+    new->info = x;
+    new->next = NULL;
+    if (list==NULL && pos==1)
+    {
+        list = new;
+    }
+    else if (list==NULL)
+    {
+        printf("\nInvalid postion.");
+        return;
+    }
+    else
+    {
+        int cur_pos=1;
+        prev = NULL;
+        cur = list;
+        while(cur_pos<pos)
+        {
+            // printf("%d %d",pos,cur_pos);
+            
+            if (cur->next==NULL && pos>(cur_pos+1))
+            {
+                printf("\nInvalid postion");
+                return;
+            }
+            else
+            {
+                prev = cur;
+                cur = cur->next;
+                cur_pos++;
+            }
+        }
+        if (prev==NULL && pos==1)
+            {
+                new->next = list;
+                list = new;
+                return;
+            }
+        new->next = prev->next;
+        prev->next = new;
+    }
+}
+
+void frontdelete()
+{
+    if (list==NULL)
+    printf("List is empty");
+    else
+    {
+        cur = list;
+        list = list->next;
+        printf("Deleted %d",cur->info);
+        free(cur);
+        cur = NULL;
+    }
+}
+
+void backdelete()
+{
+    if (list==NULL)
+    printf("Empty list");
+    else
+    {
+        prev = NULL;
+        cur = list;
+        while (cur->next!=NULL)
+        {
+            prev = cur;
+            cur = cur->next;
+        }
+        if (prev==NULL)
+        {
+            printf("Deleted %d",list->info);
+            free(list);
+            list = NULL;
+        }
+        else
+        {
+            prev->next = NULL;
+            printf("Deleted %d",cur->info);
+            free(cur);
+            cur = NULL;
+            prev = NULL;
+        }
+    }
+}
