@@ -18,12 +18,13 @@ void display();
 void frontdelete();
 void backdelete();
 void posins();
+void posdelete();
 
 void main()
 {
     while (1)
     {
-        printf("\n\n\n1.Front Insertion\n2.Back Insertion\n3.Positional Insertion\n4.Display\n5.Front delete\n6.Back delete\n\nEnter your choice: ");
+        printf("\n\n\n1.Front Insertion\n2.Back Insertion\n3.Positional Insertion\n4.Display\n5.Front delete\n6.Back delete\n7.Position delete\n\nEnter your choice: ");
         int ch;
         scanf("%d",&ch);
         switch (ch)
@@ -45,6 +46,9 @@ void main()
             break;
         case 6:
             backdelete();
+            break;
+        case 7:
+            posdelete();
             break;
         default:
             exit(1);
@@ -212,5 +216,56 @@ void backdelete()
             cur = NULL;
             prev = NULL;
         }
+    }
+}
+
+void posdelete()
+{
+    int pos,x;
+    printf("\nEnter position to be deleted: ");
+    scanf("%d",&pos);
+    if (list == NULL)
+    {
+        printf("\nList empty");
+    }
+    else if (list->next==NULL && pos!=1)
+    {
+        printf("\nInvalid postion");
+    }
+    else if (pos==1)
+    {
+        cur = list;
+        list = list->next;
+        printf("Deleted %d",cur->info);
+        free(cur);
+        cur = NULL;
+        return;
+    }
+    else
+    {
+        prev = NULL;
+        cur = list;
+        int cur_pos=1;
+        while (cur!=NULL)
+        {
+            if (cur_pos==pos)
+            {
+
+                printf("Deleted %d",cur->info);
+                prev->next = cur->next;
+                free(cur);
+                cur = NULL;
+                return;
+                
+            }
+            else
+            {
+                cur_pos++;
+                prev = cur;
+                cur = cur->next;
+            }
+        }
+        printf("Invalid position");
+        return;
     }
 }
