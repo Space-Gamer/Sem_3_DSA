@@ -14,6 +14,7 @@ struct node *list;
 
 void frontins();
 void backins();
+void ordins();
 void display();
 void frontdelete();
 void backdelete();
@@ -24,7 +25,7 @@ void main()
 {
     while (1)
     {
-        printf("\n\n\n1.Front Insertion\n2.Back Insertion\n3.Positional Insertion\n4.Display\n5.Front delete\n6.Back delete\n7.Position delete\n\nEnter your choice: ");
+        printf("\n\n\n1.Front Insertion\n2.Back Insertion\n3.Positional Insertion\n4.Ordered Insertion\n5.Display\n6.Front delete\n7.Back delete\n8.Position delete\n\nEnter your choice: ");
         int ch;
         scanf("%d",&ch);
         switch (ch)
@@ -39,15 +40,18 @@ void main()
             posins();
             break;
         case 4:
-            display();
+            ordins();
             break;
         case 5:
-            frontdelete();
+            display();
             break;
         case 6:
-            backdelete();
+            frontdelete();
             break;
         case 7:
+            backdelete();
+            break;
+        case 8:
             posdelete();
             break;
         default:
@@ -173,6 +177,44 @@ void posins()
         new->next = prev->next;
         prev->next = new;
     }
+}
+
+void ordins()
+{
+    int x;
+    printf("\nEnter data to be inserted: ");
+    scanf("%d",&x);
+    new = (struct node*) malloc(sizeof(struct node*));
+    new->info = x;
+    new->next = NULL;
+    prev = NULL;
+    cur = NULL;
+    if (list==NULL)
+    {
+        list = new;
+        return;
+    }
+    else
+    {
+        prev = NULL;
+        cur = list;
+        while (cur!=NULL && cur->info < new->info)
+        {
+            prev = cur;
+            cur = cur->next;
+        }
+        if (prev == NULL)
+        {
+            new->next = list;
+            list = new;
+        }
+        else
+        {
+            new->next = prev->next; 
+            prev->next = new;
+        }
+    }
+
 }
 
 void frontdelete()
