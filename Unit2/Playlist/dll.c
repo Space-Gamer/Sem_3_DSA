@@ -88,37 +88,37 @@ void insert_after(list_t* list, int data, int prev)
     }
 }
 
-void delete_front(list_t* list)
+int delete_front(list_t* list)
 {
     if (list->head == NULL)
     {
-        printf("Can't delete from empty list.\n");
-        return;
+        printf("List empty!\n");
+        return -1;
     }
     else
     {
-        struct dnode *temp;
-        temp = list->head;
+        int data = list->head->data;
+        struct dnode *temp = list->head;
         list->head = list->head->right;
-        list->head->left = NULL;
         free(temp);
+        return data;
     }
 }
 
-void delete_back(list_t* list)
+int delete_back(list_t* list)
 {
     if (list->head == NULL)
     {
-        printf("Can't delete from empty list.\n");
-        return;
+        printf("List empty!\n");
+        return -1;
     }
     else
     {
-        struct dnode *temp;
-        temp = list->tail;
+        int data = list->tail->data;
+        struct dnode *temp = list->tail;
         list->tail = list->tail->left;
-        list->tail->right = NULL;
         free(temp);
+        return data;
     }
 }
 
