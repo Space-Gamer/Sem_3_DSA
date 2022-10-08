@@ -17,6 +17,8 @@ char peep();
 
 void con_post(char[], char[]);
 
+void con_pre(char[], char[]);
+
 int eval(char[]);
 
 char s[MAX];
@@ -33,6 +35,8 @@ int main()
     scanf("%s",infix);
     con_post(infix,postfix);
     printf("\nPostfix of the expression is: %s",postfix);
+    con_pre(infix,prefix);
+    printf("\nPrefix of the expression is: %s",prefix);
     printf("\nResult of the expression: %d",eval(postfix));
 }
 
@@ -106,6 +110,18 @@ char peep()
     return s[top];
 }
 
+void strrrev(char str[])
+{
+    int i, j;
+    char temp;
+    for (i = 0, j = strlen(str) - 1; i < j; i++, j--)
+    {
+        temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+    }
+}
+
 void con_post(char infix[], char postfix[])
 {
     int i=0,j=0;
@@ -133,6 +149,27 @@ void con_post(char infix[], char postfix[])
     }
 
     postfix[j] = '\0';
+}
+
+void con_pre(char infix[], char prefix[])
+{
+    int i=0,j=0;
+    char temp;
+    strrrev(infix);
+    while (infix[i] != '\0')
+    {
+        if (infix[i] == '(')
+        {
+            infix[i] = ')';
+        }
+        else if (infix[i] == ')')
+        {
+            infix[i] = '(';
+        }
+        i++;
+    }
+    con_post(infix,prefix);
+    strrrev(prefix);
 }
 
 void push_int(int ch)
