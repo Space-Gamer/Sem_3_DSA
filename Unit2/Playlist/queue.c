@@ -15,7 +15,8 @@
 //     struct dnode *tail;
 // }queue_t;
 
-typedef list_t queue_t;
+// typedef list_t queue_t;
+#define queue_t list_t
 
 void enqueue(queue_t* queue, int data)
 {

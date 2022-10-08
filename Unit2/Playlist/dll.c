@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct dnode
+typedef struct dnode
 {
     int data;
     struct dnode *left;
     struct dnode *right;
-};
+}dnode;
 
 typedef struct list
 {
