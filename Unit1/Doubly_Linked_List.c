@@ -1,3 +1,5 @@
+// Code not completed
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,8 +16,8 @@ struct dnode *backins();
 void display();
 // void frontdelete();
 // void backdelete();
-struct dnode *keyins();
-// void posdelete();
+struct dnode *succins();
+struct dnode *keydelete();
 
 
 void main()
@@ -24,7 +26,7 @@ void main()
     dlist = NULL;
     while (1)
     {
-        printf("\n\n\n1.Front Insertion\n2.Back Insertion\n3.Key Insertion\n4.Ordered Insertion\n5.Display\n6.Front delete\n7.Back delete\n8.Position delete\n\nEnter your choice: ");
+        printf("\n\n\n1.Front Insertion\n2.Back Insertion\n3.Successor Insertion\n4.Ordered Insertion\n5.Display\n6.Front delete\n7.Back delete\n8.Key deletion\n\nEnter your choice: ");
         int ch;
         scanf("%d",&ch);
         switch (ch)
@@ -37,7 +39,7 @@ void main()
             dlist = backins(dlist);
             break;
         case 3:
-            dlist = keyins(dlist);
+            dlist = succins(dlist);
             break;
         // case 4:
         //     ordins();
@@ -51,9 +53,9 @@ void main()
         // case 7:
         //     backdelete();
         //     break;
-        // case 8:
-        //     posdelete();
-        //     break;
+        case 8:
+            dlist = keydelete(dlist);
+            break;
         default:
             exit(1);
             break;
@@ -143,7 +145,7 @@ void display(struct dnode *dlist)
     }
 }
 
-struct dnode *keyins(struct dnode *dlist)
+struct dnode *succins(struct dnode *dlist)
 {
     if (dlist == NULL)
     {
@@ -158,7 +160,7 @@ struct dnode *keyins(struct dnode *dlist)
     new->info = x;
     new->left = NULL;
     new->right = NULL;
-    printf("Enter key to be inserted after: ");
+    printf("Enter successor key: ");
     scanf("%d",&k);
     struct dnode *cur;
     cur = dlist;
@@ -172,18 +174,72 @@ struct dnode *keyins(struct dnode *dlist)
         else
         cur = cur->right;
     }
-    if (cur->right==NULL)
+    if (cur->left==NULL)
     {
-        new->left = cur;
-        cur->right = new;
+        new->right = dlist;
+        dlist->left = new;
+        dlist = new;
+        return dlist;
     }
     else
     {
-        new->left = cur;
-        new->right = cur->right;
-        cur->right->left = new;
-        cur->right = new;
+        new->right = cur;
+        new->left = cur->left;
+        cur->left->right = new;
+        cur->left = new;
     }
     return dlist;
 
+}
+
+struct dnode *keydelete(struct dnode* dlist)
+{
+    if (dlist==NULL)
+    {
+        printf("\nList is empty!");
+        return dlist;
+    }
+    int x;
+    printf("\nEnter key to be deleted:");
+    scanf("%d",&x);
+    struct dnode *cur;
+    cur = dlist;
+    while(cur->info!=x)
+    {
+        if (cur->right==NULL)
+        {
+            printf("Key not found!\n");
+            return dlist;
+        }
+        else
+        cur = cur->right;
+    }
+    if (cur->left == NULL && cur->right != NULL)
+    {
+        cur->right->left = NULL;
+        dlist = cur->right;
+        printf("Deleted %d",cur->info);
+        free(cur);
+        cur = NULL;
+    }
+    else if (cur->left == NULL && cur->right == NULL)
+    {
+        
+    }
+    else if (cur->right == NULL)
+    {
+        cur->left->right = NULL;
+        printf("Deleted %d",cur->info);
+        free(cur);
+        cur = NULL;
+    }
+    else
+    {
+        cur->right->left = cur->left;
+        cur->left->right = cur->right;
+        printf("Deleted %d",cur->info);
+        free(cur);
+        cur = NULL;
+    }
+    return dlist;
 }
