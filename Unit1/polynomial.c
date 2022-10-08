@@ -29,7 +29,7 @@ int main()
 
 struct node* inp_poly(struct node* poly)
 {
-    printf("\nEnter neagtive coeffecient to stop entering.\n");
+    printf("\nEnter neagtive exponent to stop entering.\n");
     while (1)
     {
         struct node* new;
